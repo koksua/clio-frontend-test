@@ -1,0 +1,98 @@
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: ($opacity * 100);
+    filter: #{alpha(opacity=$opacity-ie)};
+}
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+@mixin size($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+@mixin square($size) {
+    @include size($size, $size);
+}
+
+@mixin box-shadow($shadow...) {
+    -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+            box-shadow: $shadow;
+}
+
+@mixin transition($transition...) {
+    -webkit-transition: $transition;
+         -o-transition: $transition;
+            transition: $transition;
+}
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+            border-radius: $radius;
+}
+
+@mixin border-right-radius($radius) {
+    border-bottom-right-radius: $radius;
+    border-top-right-radius: $radius;
+}
+
+@mixin border-left-radius($radius) {
+    border-bottom-left-radius: $radius;
+    border-top-left-radius: $radius;
+}
+
+@mixin box-sizing($boxmodel) {
+    -webkit-box-sizing: $boxmodel;
+       -moz-box-sizing: $boxmodel;
+            box-sizing: $boxmodel;
+}
+
+@mixin rotate($degrees) {
+    -webkit-transform: rotate($degrees);
+       -moz-transform: rotate($degrees);
+        -ms-transform: rotate($degrees); // IE9 only
+         -o-transform: rotate($degrees);
+            transform: rotate($degrees);
+}
+
+@mixin gradient-vertical($start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+    background-image: -webkit-linear-gradient(top, $start-color $start-percent, $end-color $end-percent);  // Safari 5.1-6, Chrome 10+
+    background-image: -o-linear-gradient(top, $start-color $start-percent, $end-color $end-percent);  // Opera 12
+    background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+    background: linear-gradient(to bottom, $start-color, $end-color) repeat scroll 0% 100% transparent; // FireFox last version
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down
+}
+
+// media
+@mixin mobile-xs-port {
+    @media (max-width: #{$tablet-width - 1px}) and (orientation: portrait) {
+        @content
+    }
+}
+@mixin mobile-xs {
+    @media (max-width: #{$tablet-width - 1px}){
+        @content
+    }
+}
+
+@mixin mobile {
+    @media (max-width: #{$tablet-width - 1px}){
+        @content
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}){
+        @content
+    }
+}

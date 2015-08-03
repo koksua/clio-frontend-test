@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <title>Frontend Test</title>
+
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
+    <link href="src/css/index.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container" ng-controller="ProductsListCtrl">
+
+        <section class="content">
+
+            <div class="row category-list">
+                <span class="title">Please choose category:</span>
+                <a href="#" ng-click="filters.category = category.id"
+                   ng-repeat="category in categories" ng-class="{active: filters.category == category.id}">
+                   {{ category.title }}
+                </a>
+                <a href="" ng-click="filters.category = index">Clear</a>
+            </div>
+
+            <div class="row sorting">
+                <label for="sorting">Sort by</label>
+                <select id="sorting" ng-model="orderProp">
+                    <option value="index">------</option>
+                    <option value="+price">Price</option>
+                    <option value="-price">Price reverse</option>
+                    <option value="quantity">Quantity</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <ul class="products-list">
+                    <li class="list-item" ng-repeat="product in products | orderBy:orderProp | filter:filters.category">
+                        <div id="prod-{{ product.id }}" class="product-wrp" ng-class="{'active' : isOpen( product.id )}">
+                            <span class="big-image">
+                                <img ng-src="{{ getMainImage( product ) }}" />
+                            </span>
+
+                            <slick class="slick-slider" infinite="true" slides-to-show="3" slides-to-scroll="3">
+                                <div ng-repeat="($index, image) in getImages( product.gallery_id )">
+                                    <a ng-click="setMainImage( product, $index )" href="">
+                                        <img ng-src="images/{{ product.gallery_id }}/{{ image }}" />
+                                    </a>
+                                </div>
+                            </slick>
+
+                            <div class="item-content">
+                                <h4 class="title">
+                                    <a href="#">{{ ::product.title }}</a>
+                                </h4>
+                                <p class="description" ng-if="product.description" ng-click="toggle( product.id )">
+                                    {{ product.description }}
+                                </p>
+                                <div class="to-cart">
+                                    <span class="remains">{{ product.quantity }}</span>
+                                    <input class="input-control" ng-disabled="!product.quantity" ng-model="newQuantity"
+                                           type="number" min="1" max="{{ product.quantity }}" />
+
+                                    <div class="btn-group">
+                                        <span class="price">$ {{ product.price }}</span>
+                                        <button class="btn" type="button" ng-disabled="!product.quantity"
+                                                ng-click="addToCart( product, newQuantity ); newQuantity = 1;">
+                                            <i class="cart-ico"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+
+        <aside class="sidebar-right">
+
+            <div class="cart-wrp">
+                <header>
+                    <div class="title">Shopping basket</div>
+                    <a href="#/cart-page" class="cart-logo">
+                        <span class="counter" ng-if="cart.length > 0">{{ cart.length }}</span>
+                        <i class="cart-ico"></i>
+                    </a>
+                </header>
+                <div class="cart-list-wrp">
+                    <div class="cart-list" ng-repeat="item in showCart()" id="cart-{{ item.id }}">
+                        <div class="title">{{ item.title }}</div>
+                        <div>
+                            <input class="input-control" ng-model="item.quantity"
+                                   ng-change="updateCart( item, item.quantity )" max="{{ item.oldQuantity }}" type="number" value="" />
+                        </div>
+                        <div class="price">$ {{ item.price }}</div>
+                    </div>
+                </div>
+                <div class="total">$ {{ cartTotal() }}</div>
+            </div>
+
+        </aside>
+
+    </div>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/slick-carousel/slick/slick.js"></script>
+    <script src="bower_components/angular-slick/dist/slick.js"></script>
+    <script src="src/js/controllers.js"></script>
+</body>
+</html>
