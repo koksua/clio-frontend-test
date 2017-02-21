@@ -6,11 +6,10 @@ var myApp = angular.module('myApp', ['slick', 'ngCookies']);
 
 myApp.service( 'cartModel', ['$cookies', function( $cookies ){
     var cart = {};
-    var storeData = $cookies.get('myCart');
+    var storeData = null;//$cookies.get('myCart');
     var store = ( storeData ) ? JSON.parse( storeData ) : {};
 
     cart.cartAdd = function( product, quantity ) {
-
         if ( !(product && product.id) ) {
             return false;
         }
@@ -31,8 +30,7 @@ myApp.service( 'cartModel', ['$cookies', function( $cookies ){
     };
 
     cart.updateQty = function( productId, quantity, upFromCart ) {
-
-        if( !quantity ) {
+        if( quantity <= 0 ) {
             delete store[productId];
             $cookies.put('myCart', JSON.stringify( store ) );
             return false;
@@ -101,8 +99,6 @@ myApp.controller('ProductsListCtrl', ['$scope', '$http', 'cartModel', '$cookies'
         $scope.setMainImage = function( product, index ) {
             product.mainImageIndex = index;
         };
-
-        $scope.updatePruducts();
     });
 
     $http.get('data/categories.json').success(function (data) {
@@ -123,41 +119,42 @@ myApp.controller('ProductsListCtrl', ['$scope', '$http', 'cartModel', '$cookies'
         return false;
     };
 
-    $scope.addToCart = function( item, newQuantity, oldQuantity ) {
-        cartModel.cartAdd( item, newQuantity, oldQuantity );
-        $scope.updatePruducts( newQuantity );
-    };
+    $scope.addToCart = function( item, newQuantity ) {
+        if (!angular.isNumber(newQuantity)) {
+            newQuantity = 1;
+            return 1;
+        }
+        cartModel.cartAdd( item, newQuantity );
+        $scope.updatePruducts( item.id, newQuantity );
+};
 
     $scope.showCart = function() {
         return cartModel.showStore();
     };
 
-    $scope.updateCart = function( item, quantity ) {
+    $scope.updateCart = function( item, quantity, newQuantity ) {
         cartModel.updateQty( item.id, quantity );
-        $scope.updatePruducts();
-
-        if ( item.quantity === 0 ) {
-            angular.forEach( $scope.products, function ( product ) {
-                if ( item.id !== product.id ) return;
-                product.quantity = item.oldQuantity;
-            });
-        }
-
+        $scope.updatePruducts( item.id, newQuantity );
+        angular.forEach( $scope.products, function ( product ) {
+            if ( item.id !== product.id ) return;
+            product.quantity = (item.oldQuantity - quantity);
+        });
     };
 
     $scope.cartTotal = function() {
         return cartModel.total();
     };
 
-    $scope.updatePruducts = function( newQuantity ) {
+    $scope.updatePruducts = function( itemID, newQuantity ) {
         var cartObj = cartModel.showStore();
         var cartId;
 
         angular.forEach(cartObj, function( value ){
             cartId = value.id;
 
-            angular.forEach($scope.products, function( product ){
+            if (cartId !== itemID) return false;
 
+            angular.forEach($scope.products, function( product ){
                 if( cartId === product.id ) {
                     if ( product.quantity <= 0 ) {
                         return false;
@@ -169,11 +166,13 @@ myApp.controller('ProductsListCtrl', ['$scope', '$http', 'cartModel', '$cookies'
                         return product.quantity = value.oldQuantity - value.quantity;
                     }
                 }
-
             });
-
         });
 
+    };
+
+    $scope.sizeOf = function(obj) {
+        return Object.keys(obj).length;
     };
 
 }]);

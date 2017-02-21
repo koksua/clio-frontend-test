@@ -196,7 +196,7 @@ a:focus {
   clear: both;
 }
 .container .content {
-  background: white;
+  background: #ffffff;
   float: left;
   padding-top: 75px;
   width: 74%;
@@ -282,7 +282,7 @@ a:focus {
 .cart-wrp header .counter {
   background: url("../images/sprite.png") no-repeat scroll -54px 0;
   display: inline-block;
-  color: white;
+  color: #ffffff;
   font-size: 15px;
   height: 18px;
   position: absolute;
@@ -411,7 +411,7 @@ a:focus {
   height: 420px;
   padding-right: 15px;
   padding-left: 15px;
-  width: 33.33%;
+  width: 33.33333%;
 }
 .products-list .product-wrp {
   -webkit-transition: box-shadow 0.2s;
@@ -419,7 +419,7 @@ a:focus {
   transition: box-shadow 0.2s;
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
-  background-color: white;
+  background-color: #ffffff;
   border: 1px solid #c6c6c6;
   overflow: hidden;
   position: relative;
@@ -478,8 +478,9 @@ a:focus {
   content: "";
   height: 30px;
   left: 0;
+  right: 0;
   position: absolute;
-  width: 100%;
+  pointer-events: none;
 }
 .products-list .description.active {
   max-height: 250px;
@@ -514,7 +515,7 @@ a:focus {
   border-top-left-radius: 5px;
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-  color: white;
+  color: #ffffff;
   display: inline-block;
   font-size: 15px;
   height: 20px;
@@ -529,7 +530,7 @@ a:focus {
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   border: 0 none;
-  border-left: 1px solid white;
+  border-left: 1px solid #ffffff;
   cursor: pointer;
   display: inline-block;
   height: 30px;
@@ -557,7 +558,7 @@ a:focus {
 .products-list .cart-ico {
   width: 20px;
   height: 18px;
-  background: rgba(0, 0, 0, 0) url("../images/sprite.png") no-repeat scroll -55px -25px;
+  background: transparent url("../images/sprite.png") no-repeat scroll -55px -25px;
   display: inline-block;
 }
 .products-list .remains {
@@ -620,7 +621,7 @@ a:focus {
 }
 .slick-slider .slick-prev,
 .slick-slider .slick-next {
-  background: rgba(0, 0, 0, 0) url("../images/sprite.png") no-repeat scroll 0px -54px;
+  background: transparent url("../images/sprite.png") no-repeat scroll 0px -54px;
   border: 0 none;
   cursor: pointer;
   font-size: 0;

@@ -234,7 +234,7 @@ a {
         height: 420px;
         padding-right: 15px;
         padding-left: 15px;
-        width: 33.33%;
+        width: percentage(1/3);
     }
 
     .product-wrp {
@@ -304,8 +304,9 @@ a {
             content: "";
             height: 30px;
             left: 0;
+            right: 0;
             position: absolute;
-            width: 100%;
+            pointer-events: none;
         }
 
         &.active {

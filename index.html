@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
     <link href="src/css/index.css" type="text/css" rel="stylesheet" />
+    <link rel="icon shortcut" type="image/png" sizes="32x32" href="src/images/favicon-32x32.png" />
 </head>
 <body>
     <div class="container" ng-controller="ProductsListCtrl">
@@ -88,7 +89,7 @@
                 <header>
                     <div class="title">Shopping basket</div>
                     <a href="#/cart-page" class="cart-logo">
-                        <span class="counter" ng-if="cart.length > 0">{{ cart.length }}</span>
+                        <span class="counter" ng-if="sizeOf( showCart() ) > 0">{{ sizeOf( showCart() ) }}</span>
                         <i class="cart-ico"></i>
                     </a>
                 </header>
@@ -97,7 +98,7 @@
                         <div class="title">{{ item.title }}</div>
                         <div>
                             <input class="input-control" ng-model="item.quantity"
-                                   ng-change="updateCart( item, item.quantity )" max="{{ item.oldQuantity }}" type="number" value="" />
+                                ng-change="updateCart( item, item.quantity )" max="{{ item.oldQuantity }}" type="number" value="" />
                         </div>
                         <div class="price">$ {{ item.price }}</div>
                     </div>
